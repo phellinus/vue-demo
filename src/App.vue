@@ -10,9 +10,10 @@ interface RuleForm {
 
 	lensConfig: string;
 	phoneModel: string;
+	focusRange: string;
 }
 
-type DynamicFieldProp = "lensConfig" | "phoneModel";
+type DynamicFieldProp = "lensConfig" | "phoneModel" | "focusRange";
 
 interface DynamicField {
 	label: string;
@@ -36,6 +37,7 @@ const ruleForm = reactive<RuleForm>({
 
 	lensConfig: "",
 	phoneModel: "",
+	focusRange: "",
 });
 
 const fieldMap: Record<"camera" | "phone", DynamicField[]> = {
@@ -49,6 +51,19 @@ const fieldMap: Record<"camera" | "phone", DynamicField[]> = {
 				{
 					required: true,
 					message: "请输入镜头配置",
+					trigger: "blur",
+				},
+			],
+		},
+		{
+			label: "聚焦范围",
+			prop: "focusRange",
+			type: "input",
+			placeholder: "请输入聚焦范围",
+			rules: [
+				{
+					required: true,
+					message: "请输入聚焦范围",
 					trigger: "blur",
 				},
 			],
@@ -80,7 +95,7 @@ const currentFields = computed<DynamicField[]>(() => {
  * 这样切换后不会残留上一个字段的报错
  */
 function handleDeviceChange() {
-	formRef.value?.clearValidate(["lensConfig", "phoneModel"]);
+	formRef.value?.clearValidate(["lensConfig", "phoneModel", "focusRange"]);
 }
 
 const baseRules: FormRules = {
@@ -135,6 +150,7 @@ function handleReset() {
 	ruleForm.remark = "";
 	ruleForm.lensConfig = "";
 	ruleForm.phoneModel = "";
+    ruleForm.focusRange = "";
 	formRef.value?.clearValidate();
 }
 </script>
